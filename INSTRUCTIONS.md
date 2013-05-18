@@ -58,7 +58,7 @@ The different functions of the application, as detailed above, utilize various J
 
 **Figure 2 - Technologies Used in the Application**
 
-<pre><code><b>Flow</b>             | <b>Description</b>
+<b>Flow</b>             | <b>Description</b>
 -----------------|---------------------------------------------------------
 User Interface   | Written entirely in JavaServer Faces (JSF).
 -----------------|---------------------------------------------------------
@@ -77,8 +77,6 @@ Movie Points     | Uses Java Message Service (JMS) to update and obtain
 -----------------|---------------------------------------------------------
 Chat Room        | Utilizes client-side JavaScript and JSON to communicate 
                  | with a WebSocket endpoint
------------------|---------------------------------------------------------
-</code></pre>
 
 **Table 1 - Technologies Used in the Application**
 
