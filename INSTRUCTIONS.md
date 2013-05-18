@@ -58,25 +58,14 @@ The different functions of the application, as detailed above, utilize various J
 
 **Figure 2 - Technologies Used in the Application**
 
-<b>Flow</b>             | <b>Description</b>
+<b>Flow</b>      | <b>Description</b>
 -----------------|---------------------------------------------------------
 User Interface   | Written entirely in JavaServer Faces (JSF).
------------------|---------------------------------------------------------
-Show Booking     | Uses lightweight Enterprise JavaBeans to 
-                 | communicate with the database using Java Persistence API
------------------|---------------------------------------------------------
-Add/Delete Movie | Implemented using RESTful Web Services. JSON is used as 
-                 | on-the-wire data format.
------------------|---------------------------------------------------------
-Ticket Sales     | Uses Batch Applications for the Java Platform to calculate 
-                 | the total sales and persist to the database.
------------------|---------------------------------------------------------
-Movie Points     | Uses Java Message Service (JMS) to update and obtain 
-                 | loyalty reward points; an optional implementation using 
-                 | database technology may be performed.
------------------|---------------------------------------------------------
-Chat Room        | Utilizes client-side JavaScript and JSON to communicate 
-                 | with a WebSocket endpoint
+Show Booking     | Uses lightweight Enterprise JavaBeans to communicate with the database using Java Persistence API
+Add/Delete Movie | Implemented using RESTful Web Services. JSON is used as on-the-wire data format.
+Ticket Sales     | Uses Batch Applications for the Java Platform to calculate the total sales and persist to the database.
+Movie Points     | Uses Java Message Service (JMS) to update and obtain loyalty reward points; an optional implementation using  database technology may be performed.
+Chat Room        | Utilizes client-side JavaScript and JSON to communicate with a WebSocket endpoint
 
 **Table 1 - Technologies Used in the Application**
 
