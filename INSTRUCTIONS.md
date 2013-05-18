@@ -99,16 +99,16 @@ Select *File > Open Project...*, select the movieplex7 directory, and click on *
 While opening the project, NetBeans may prompt you to create a configuration file to configure the base URI of the REST resources bundled in the application. The application already contains a source file that provides the needed configuration. Click on *Cancel* to dismiss this dialog.
 
 #### 3.3. Maven Coordinates
-Expand *Project Files* and double click on <code>pom.xml</code>. In the pom.xml, the Java EE 7 API is specified as a <code>&lt;dependency&gt;</code>:
+Expand *Project Files* and double click on <code>pom.xml</code>. In the pom.xml, the Java EE 7 API is specified as a <code><dependency></code>:
 
 ```xml
-	&lt;dependencies&gt;
-   &lt;dependency&gt;
-     &lt;groupId&gt;javax&lt;/groupId&gt;
-     &lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
-     &lt;version&gt;7.0-b87&lt;/version&gt;
-   &lt;/dependency&gt;
-&lt;dependencies&gt;
+<dependencies>
+   <dependency>
+     <groupId>javax</groupId>
+     <artifactId>javaee-api</artifactId>
+     <version>7.0-b87</version>
+   </dependency>
+<dependencies>
 ```
 
 This will ensure that Java EE 7 APIs are retrieved from Maven. Notice, a specific version number is specified and this must be used with the downloaded GlassFish 4.0 build. 
@@ -125,34 +125,36 @@ Expand “Other Sources”, <code>src/main/resources</code>, <code>META-INF</cod
 
 It looks like:
 
-<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;persistence version="2.0"
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
    xmlns="http://java.sun.com/xml/ns/persistence"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
-                       http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"&gt;
-   &lt;persistence-unit name="movieplex7PU" transaction-type="JTA"&gt;
-     &lt;!--
-     &lt;jta-data-source&gt;java:comp/DefaultDataSource&lt;/jta-data-source&gt;
-     --&gt;
-     &lt;properties&gt;
-       &lt;property name="javax.persistence.schema-generation.database.action"
-                 value="drop-and-create"/&gt;
-       &lt;property name="javax.persistence.schema-generation.create-source"
-                 value="script"/&gt;
-       &lt;property name="javax.persistence.schema-generation.create-script-source"
-                 value="META-INF/create.sql"/&gt;
-       &lt;property n ame="javax.persistence.sql-load-script-source"
-                value="META-INF/load.sql"/&gt;
-       &lt;property name="eclipselink.deploy-on-startup"
-                 value="true"/&gt;
-       &lt;property name="eclipselink.logging.exceptions"
-                 value="false"/&gt;
-     &lt;/properties&gt;
-   &lt;/persistence-unit&gt;
-&lt;/persistence&gt;</code></pre>
+                       http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+   <persistence-unit name="movieplex7PU" transaction-type="JTA">
+     <!--
+     <jta-data-source>java:comp/DefaultDataSource</jta-data-source>
+     -->
+     <properties>
+       <property name="javax.persistence.schema-generation.database.action"
+                 value="drop-and-create"/>
+       <property name="javax.persistence.schema-generation.create-source"
+                 value="script"/>
+       <property name="javax.persistence.schema-generation.create-script-source"
+                 value="META-INF/create.sql"/>
+       <property n ame="javax.persistence.sql-load-script-source"
+                value="META-INF/load.sql"/>
+       <property name="eclipselink.deploy-on-startup"
+                 value="true"/>
+       <property name="eclipselink.logging.exceptions"
+                 value="false"/>
+     </properties>
+   </persistence-unit>
+</persistence>
+```
 
-Notice <code>&lt;jta-data-source&gt;</code> is commented out, i.e. no data source element is specified. This element identifies the JDBC resource to connect to in the runtime environment of the underlying application server.
+Notice <code><jta-data-source></code> is commented out, i.e. no data source element is specified. This element identifies the JDBC resource to connect to in the runtime environment of the underlying application server.
 
 The Java EE 7 platform defines a new default DataSource that must be provided by the runtime. This pre-configured data source is accessible under the JNDI name:
 
