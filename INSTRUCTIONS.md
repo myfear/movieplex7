@@ -48,11 +48,11 @@ This hands-on lab builds a typical 3-tier Java EE 7 Web application that allows 
 
 ![app_flow](images/app_flow.png "Figure 1 - Application flow")
 
-**Figure 2 - Application flow**
+**Figure 1 - Application flow**
 
-*Figure 2* shows the key components of the application. The User Interface initiates all the flows in the application. Show Booking, Add/Delete Movie and Ticket Sales interact with the database; Movie Points may interact with the database, however, this is out of scope for this application; and Chat Room does not interact with the database.
+*Figure 1* shows the key components of the application. The User Interface initiates all the flows in the application. Show Booking, Add/Delete Movie and Ticket Sales interact with the database; Movie Points may interact with the database, however, this is out of scope for this application; and Chat Room does not interact with the database.
 
-The different functions of the application, as detailed above, utilize various Java technologies and web standards in their implementation. *Figure 3* shows how different Java EE technologies are used in different flows.
+The different functions of the application, as detailed above, utilize various Java technologies and web standards in their implementation. *Figure 2* shows how different Java EE technologies are used in different flows.
 
 ![app_flow_figure_2](images/app_flow_figure_3.png "Figure 2 - Technologies Used in the Application")
 
@@ -172,34 +172,14 @@ The <code>persistence.xml</code> in the application has the following
 <code>javax.persistence.schema-generation.*</code> properties. Their meaning and
 possible values are explained in Table 2.
 
-<pre><code><b>Property</b>                     | <b>Meaning</b>                      | <b>Values</b>
+<b>Property</b>              | <b>Meaning</b>               | <b>Values</b>
 -----------------------------|------------------------------|---------------------
-javax.persistence.schema-    | Specifies the action to be   | "none", "create",
-generation.database.action   | taken by the persistence     | "drop-and-create",
-                             | provider with regard to      | "drop”
------------------------------|------------------------------|---------------------
-javax.persistence.schema-    | Specifies whether the        | "metadata”, "script",
-generation.create-source     | creation of database         | "metadata-then-
-                             | artifacts is to occur on     | script”, “script-
-                             | the basis of the             | then-metadata”
-                             | object/relational mapping    | 
-                             | metadata, DDL script, or     | 
-                             | a combination of the two.    | 
------------------------------|------------------------------|---------------------
-javax.persistence.schema-    | Specifies a java.IO.Reader   |
-generation.create-script-    | configured for reading of    |
-source                       | the DDL script or a string   |
-                             | designating a file URL       |
-                             | for the DDL script           |
------------------------------|------------------------------|---------------------
-javax.persistence.sql-load-  | Specifies a java.IO.Reader   |
-script-source                | configured for reading of the|
-                             | SQL load script for database |
-                             | initialization or a string   |
-                             | designating a file URL for   |
-                             | the script.                  |
------------------------------|------------------------------|---------------------
-</code></pre>
+javax.persistence.schema-generation.database.action | Specifies the action to be taken by the persistence provider with regard to the database artifacts. | "none", "create","drop-and-create", "drop”
+javax.persistence.schema-generation.create-source | Specifies whether the creation of database artifacts is to occur on the basis of the object/relational mapping metadata, DDL script, or a combination of the two.    | “metadata”, “script”, "metadata-then-script”, “script-then-metadata”
+javax.persistence.schema-generation.create-script-source | Specifies a java.IO.Reader configured for reading of the DDL script or a string designating a file URL for the DDL script | 
+javax.persistence.sql-load-script-source | Specifies a java.IO.Reader configured for reading of the SQL load script for database initialization or a string designating a file URL for the script. | 
+
+**Table 2 - JPA Schema Generation Properties**
 
 Refer to the [JPA 2.1 Specification](http://jcp.org/en/jsr/detail?id=338) for a complete understanding of these properties.
 
