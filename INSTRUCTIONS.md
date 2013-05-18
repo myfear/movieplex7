@@ -101,13 +101,15 @@ While opening the project, NetBeans may prompt you to create a configuration fil
 #### 3.3. Maven Coordinates
 Expand *Project Files* and double click on <code>pom.xml</code>. In the pom.xml, the Java EE 7 API is specified as a <code>&lt;dependency&gt;</code>:
 
-<pre><code>&lt;dependencies&gt;
+```xml
+	&lt;dependencies&gt;
    &lt;dependency&gt;
      &lt;groupId&gt;javax&lt;/groupId&gt;
      &lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
      &lt;version&gt;7.0-b87&lt;/version&gt;
    &lt;/dependency&gt;
-&lt;dependencies&gt;</code></pre>
+&lt;dependencies&gt;
+```
 
 This will ensure that Java EE 7 APIs are retrieved from Maven. Notice, a specific version number is specified and this must be used with the downloaded GlassFish 4.0 build. 
 
