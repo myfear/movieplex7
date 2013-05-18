@@ -208,3 +208,85 @@ The package <code>org.glassfish.movieplex7.rest</code> contains stateless EJBs c
 Each EJB has methods to perform CRUD operations on the JPA entity and convenience query methods. Each EJB is also EL-injectable (<code>@Named</code>) and published as a REST endpoint (<code>@Path</code>). The <code>AplicationConfig</code> class defines the base path of REST endpoint. The path for the REST endpoint is the same as the JPA entity class name. 
 
 The mapping between JPA entity classes, EJB classes, and the URI of the corresponding REST endpoint is shown in Table 3.
+
+<b>JPA Entity Class</b> | <b>EJB Class</b> | <b>RESTful Path</b>
+------------------------|------------------|--------------------
+Movie | MovieFacadeREST | /webresources/movie
+Sales | SalesFacadeREST | /webresources/sales
+ShowTiming | ShowTimingFacadeREST | /webresources/showtiming
+Theater | TheaterFacadeREST | /webresources/theater
+Timeslot | TimeslotFacadeREST | /webresources/timeslot
+
+**Table 3: JPA Entity and EJB Class Mapping with RESTful Path**
+
+Feel free to browse through the code.
+
+#### 3.7. JSF Pages
+The file <code>WEB-INF/template.xhtml</code> defines the template of the web page and has a header, left navigation bar, and a main content section. <code>index.xhtml</code> uses this template and the EJBs to display the number of movies and theaters. <code>beans.xml</code> enables CDI injection in the WAR file.
+
+Note, <code>template.xhtml</code> is in <code>WEB-INF</code> folder as it allows the template to be accessible from the pages bundled with the application only. If it were bundled with rest of the pages then it would be accessible outside the application and thus allowing other external pages to use it as well.
+
+#### 3.8. Run the sample
+Right-click on the project and select “Run”. This will download all the maven dependencies on your laptop, build a WAR file, deploy on **GlassFish 4**, and show the URL <code>[http://localhost:8080/movieplex7](http://localhost:8080/movieplex7)</code> in the browser.
+
+During first run, the IDE will ask you to select a deployment server. Choose the configured GlassFish server and click on “OK”.
+
+![select_deployment_server](images/select_deployment_server.png)
+
+The output looks like as shown below:
+
+![first_run](images/first_run.png)
+
+#### 4. Show Booking (JavaServer Faces)
+
+##### Purpose
+Build pages that allow a user to book a particular movie show in a theater. In doing so a new feature of JavaServer Faces 2.2 will be introduced and demonstrated by using in the application.
+
+JavaServer Faces 2.2 introduces a new feature called Faces Flow that provides an encapsulation of related views/pages with application defined entry and exit points. Faces Flow borrows core concepts from ADF TaskFlow, Spring Web Flow, and Apache MyFaces CODI.
+
+It introduces <code>@FlowScoped</code> CDI annotation for flow-local storage and <code>@FlowDefinition</code> to define the flow using CDI producer methods. There are clearly defined entry and exit points with well-defined parameters. This allows the flow to be packaged together as a JAR or ZIP file and be reused. The application thus becomes a collection of flows and non-flow pages. Usually the objects in a flow are designed to allow the user to accomplish a task that requires input over a number of different views.
+
+This application will build a flow that allows the user to make a movie reservation. The flow will contain four pages:
+
+1. Display the list of movies
+2. Display the list of available show timings
+3. Confirm the choices
+4. Make the reservation and show the ticket
+
+**4.1** Items in a flow are logically related to each other and so it is required to keep them together in a directory.	
+
+In NetBeans IDE, right-click on the “Web Pages”, select “New”, “Folder...”, specify the folder name “booking”, and click on “Finish”.
+
+![create_new_folder](images/create_new_folder.png)
+
+**4.2** Right-click on the newly created folder, select “New”, “Other...”, “JavaServer Faces”, “Facelets Template Client”, and click on “Next >”.
+
+![faces_template_client](images/faces_template_client.png)
+
+Give the File Name as “booking”. Click on “Browse...” next to “Template:”, expand “Web Pages”, “WEB-INF”, select “template.xhtml”, and click on “Select File”. Click on “Finish”.
+
+In this file, remove <code>&lt;ui:define&gt;</code> sections with “top” and “left” names as these are inherited from the template.
+
+![faces_template_client_name](images/faces_template_client_name.png)
+
+**4.3** “booking.xhtml” is the entry point to the flow (more on this later). Replace the “content” <code>&lt;ui:define&gt;</code> section such that it looks like:
+
+```xml
+<ui:define name="content">
+  <h2>Pick a movie</h2>
+  <h:form prependId="false">
+    <h:selectOneRadio value="#{booking.movieId}" layout="pageDirection" required="true">
+      <f:selectItems value="#{movieFacadeREST.all}" var="m" itemValue="#{m.id}" itemLabel="#{m.name}"/>
+    </h:selectOneRadio>
+    <h:commandButton id="shows" value="Pick a time" action="showtimes" />
+  </h:form>
+</ui:define>
+```
+
+The code builds an HTML form that displays the list of movies as radio button choices. The chosen movie is bound to <code>#{booking.movieId}</code> which will be defined as a flow-scoped bean. The value of action attribute on commandButton refers to the next view in the flow, i.e. “showtimes.xhtml” in the same directory in our case.
+
+Click on the hint (shown as yellow bulb) and click on the suggestion to add namespace prefix. Do the same for <code>c:</code> and <code>f:</code> prefix as shown below:
+
+![xml_namespace_hint](images/xml_namespace_hint.png)
+
+**4.4** Right-click on “Source Packages”, select “New”, “Java Class...”. Specify the class name as “Booking” and the package name as <code>org.glassfish.movieplex7.booking</code>.
