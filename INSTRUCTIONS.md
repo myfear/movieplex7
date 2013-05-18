@@ -220,7 +220,7 @@ In the application, the scripts are bundled in the WAR file in <code>META-INF</c
 
 Feel free to open <code>create.sql</code> and <code>load.sql</code> and read through the SQL scripts. The database schema is shown in Figure 7.
 
-![figure_7](images/figure_6.png "Figure 6 - Database Schema")
+![figure_7](images/figure_7.png "Figure 7 - Database Schema")
 
 **Figure 6 - Database Schema**
 
