@@ -283,7 +283,7 @@ In this file, remove <code>&lt;ui:define&gt;</code> sections with “top” and 
 </ui:define>
 ```
 
-The code builds an HTML form that displays the list of movies as radio button choices. The chosen movie is bound to <code>#{booking.movieId}</code> which will be defined as a flow-scoped bean. The value of action attribute on commandButton refers to the next view in the flow, i.e. “showtimes.xhtml” in the same directory in our case.
+The code builds an HTML form that displays the list of movies as radio button choices. The chosen movie is bound to <code>#{booking.movieId}</code> which will be defined as a flow-scoped bean. The value of <code>action</code> attribute on <code>commandButton</code> refers to the next view in the flow, i.e. “showtimes.xhtml” in the same directory in our case.
 
 Click on the hint (shown as yellow bulb) and click on the suggestion to add namespace prefix. Do the same for <code>c:</code> and <code>f:</code> prefix as shown below:
 
