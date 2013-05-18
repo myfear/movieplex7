@@ -93,6 +93,8 @@ This repository comes with a starting code application named <code>movieplex7</c
 #### 3.2. Open Project In NetBeans IDE
 Select *File > Open Project...*, select the movieplex7 directory, and click on *Open Project*. The project structure is shown in *Figure 4*.
 
+![project_structure](images/project_structure.png "Project Structure")
+
 ##### Attention
 While opening the project, NetBeans may prompt you to create a configuration file to configure the base URI of the REST resources bundled in the application. The application already contains a source file that provides the needed configuration. Click on *Cancel* to dismiss this dialog.
 
