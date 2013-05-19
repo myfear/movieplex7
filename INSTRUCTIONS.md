@@ -99,7 +99,7 @@ Select *File > Open Project...*, select the movieplex7 directory, and click on *
 While opening the project, NetBeans may prompt you to create a configuration file to configure the base URI of the REST resources bundled in the application. The application already contains a source file that provides the needed configuration. Click on *Cancel* to dismiss this dialog.
 
 #### 3.3. Maven Coordinates
-Expand *Project Files* and double click on <code>pom.xml</code>. In the pom.xml, the Java EE 7 API is specified as a <code><dependency></code>:
+Expand *Project Files* and double click on <code>pom.xml</code>. In the pom.xml, the Java EE 7 API is specified as a <code>dependency</code>:
 
 ```xml
 <dependencies>
@@ -305,3 +305,156 @@ communication with the remote host.JSR 356 defines a standard API for creating W
 * Integration with Java EE security model
 
 This section will build a chat room for movie viewers.
+
+**5.1** Right-click on “Source Packages”, select “New”, “Java Class…”. Give the class name as <code>ChatServer</code>, package as <code>org.glassfish.movieplex7.chat</code>, and 
+click on “Finish”.
+
+**5.2** Change the class such that it looks like:
+<code>
+@ServerEndpoint("/websocket")
+public class ChatServer {
+private static final Set<Session> peers = 
+Collections.synchronizedSet(new HashSet<Session>());
+@OnOpen
+public void onOpen(Session peer) {
+peers.add(peer);
+}
+@OnClose
+public void onClose(Session peer) {
+peers.remove(peer);
+}
+@OnMessage
+public void message(String message, Session client) throws 
+IOException, EncodeException {
+for (Session peer : peers) {
+if (!peers.equals(client))
+peer.getBasicRemote().sendObject(message);
+}
+}
+}
+</code>
+In this code:
+* <code>@ServerEndpoint</code> decorates the class to be a WebSocket endpoint. The value defines the URI where this endpoint is published.
+* <code>@OnOpen</code> and <code>@OnClose</code> decorate the methods that must be called when WebSocket session is opened or closed. The peer parameter defines the client requesting connection initiation and termination.
+* <code>@OnMessage</code> decorates the message that receives the incoming WebSocket message. The first parameter, message, is the payload of the message. The second parameter, client, defines the other end of the WebSocket connection. The method implementation transmits the received message to all clients connected to this endpoint.
+
+Resolve the imports. Make sure to pick java.websocket.Session instead of the default.
+
+**5.3** In “Web Pages”, select “New”, “Folder…”, give the folder name as <code>chat</chat> and click on “Finish”.
+**5.4** Create <code>chatroom.xhtml</code> in “chat” folder following the steps outlined in 4.2. 
+Replace “content” <code><ui:define></code> section such that it looks like:
+
+```xml
+<ui:define name="content">
+<form action=""> 
+<table>
+<tr>
+<td>
+Chat Log<br/>
+<textarea readonly="true" rows="6" cols="50" 
+id="chatlog"></textarea> 
+</td>
+<td>
+Users<br/>
+<textarea readonly="true" rows="6" cols="20" 
+id="users"></textarea>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input id="textField" name="name" value="Duke" type="text"/>
+<input onclick="join();" value="Join" type="button"/>
+<input onclick="send_message();" value="Send" 
+type="button"/><p/>
+<input onclick="disconnect();" value="Disconnect" 
+type="button"/>
+</td>
+</tr>
+</table>
+</form>
+<div id="output"></div>
+<script language="javascript" type="text/javascript" 
+src="${facesContext.externalContext.requestContextPath}/chat/websocket.
+js"></script>
+</ui:define>
+```
+The code builds an HTML form that has two textareas – one to display the chat log and the other to display the list of users currently logged. A single text box is used to take the user name or the chat message. Clicking on “Join” button takes the value as user name and clicking on “Send” takes the value as chat message. JavaScript methods are invoked when these buttons are clicked and these are explained in the next section. The chat messages are sent and received as WebSocket payloads. There is an explicit 
+button to disconnect the WebSocket connection.
+“output” div is the placeholder for status messages. The 
+WebSocket initialization occurs in “websocket.js” included at the bottom of the fragment.
+
+![xml_namespace_hint](images/select_javascript_file_type.png)
+
+**5.5** Right-click on “chat” in “Web Pages”, select “New”, “Web”, “JavaScript File”. 
+Give the name as “websocket” and click on “Finish”.
+
+**5.6** Edit the contents of “websocket.js” such that it looks like:
+
+<code>
+var wsUri = 'ws://' + document.location.host 
++ document.location.pathname.substr(0,
+document.location.pathname.indexOf("/faces"))
++ '/websocket';
+console.log(wsUri);
+var websocket = new WebSocket(wsUri);
+var username;
+websocket.onopen = function(evt) { onOpen(evt); };
+websocket.onmessage = function(evt) { onMessage(evt); };
+websocket.onerror = function(evt) { onError(evt); };
+websocket.onclose = function(evt) { onClose(evt); };
+var output = document.getElementById("output");
+function join() {
+username = textField.value;
+websocket.send(username + " joined");
+}
+function send_message() {
+websocket.send(username + ": " + textField.value);
+}
+function onOpen() {
+writeToScreen("CONNECTED");
+}
+function onClose() {
+writeToScreen("DISCONNECTED");
+}
+function onMessage(evt) {
+writeToScreen("RECEIVED: " + evt.data);
+if (evt.data.indexOf("joined") !== -1) {
+users.innerHTML += evt.data.substring(0, evt.data.indexOf(" 
+joined")) + "\n";
+} else {
+chatlog.innerHTML += evt.data + "\n";
+}
+}
+function onError(evt) {
+writeToScreen('<span style="color: red;">ERROR:</span> ' + 
+evt.data);
+}
+function disconnect() {
+websocket.close();
+}
+function writeToScreen(message) {
+var pre = document.createElement("p");
+pre.style.wordWrap = "break-word";
+pre.innerHTML = message;
+output.appendChild(pre);
+}
+</code>
+
+The WebSocket endpoint URI is calculated by using standard JavaScript variables and appending the URI specified in the ChatServer class. WebSocket is initialized by calling new WebSocket(…). Event handlers are registered for lifecycle events using onXXX messages. The listeners registered in this script are explained in Table	4.
+
+**Table 4 - WebSocket Event Listeners**
+
+<b>Listeners</b>      | <b>Called When</b>
+-----------------|---------------------------------------------------------
+onOpen(evt) | WebSocket connection is initiated
+onMessage(evt) | WebSocket message is received
+onError(evt) | Error occurs during the communication
+onClose(evt) | WebSocket connection is terminated
+
+Any relevant data is passed along as parameter to the function. Each method 
+prints the status on the browser using writeToScreen utility method. The join
+method sends a message to the endpoint that a particular user has joined. The 
+endpoint then broadcasts the message to all the listening clients. The 
+send_message method appends the logged in user name and the value of the 
+text field and broadcasts to all the clients similarly. The onMessage method 
+updates the list of logged in users as well.
