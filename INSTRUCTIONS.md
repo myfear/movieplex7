@@ -290,3 +290,18 @@ Click on the hint (shown as yellow bulb) and click on the suggestion to add name
 ![xml_namespace_hint](images/xml_namespace_hint.png)
 
 **4.4** Right-click on “Source Packages”, select “New”, “Java Class...”. Specify the class name as “Booking” and the package name as <code>org.glassfish.movieplex7.booking</code>.
+
+#### 5.0	Chat	Room	(Java	API	for	WebSocket)
+
+##### Purpose
+Build a chat room for viewers. In doing so several new features of Java API for WebSocket 1.0 will be introduced and demonstrated by using them in the application.
+WebSocket provide a full-duplex and bi-directional communication protocol over a single TCP connection. WebSocket is a combination of IETF RFC 6455
+Protocol and W3C JavaScript WebSocket API (a Candidate Recommendation as of this writing). The protocol defines an opening handshake and data transfer. The API enables Web pages to use the WebSocket protocol for two-way 
+communication with the remote host.JSR 356 defines a standard API for creating WebSocket applications in the Java EE 7 Platform. The JSR provides support for:
+* Create WebSocket endpoint using annotations and interface
+* Initiating and intercepting WebSocket events
+* Creation and consumption of WebSocket text and binary messages
+* Configuration and management of WebSocket sessions
+* Integration with Java EE security model
+
+This section will build a chat room for movie viewers.
